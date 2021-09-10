@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify,render_template
 import os
 from flask_cors import CORS, cross_origin
+from wsgiref.simple_server import make_server
+from wsgiref import simple_server
 
 import cosineSimilarity
 from levenshteinDistance import levenshtein
@@ -39,10 +41,14 @@ def predictRoute():
 
 
 
-#port = int(os.getenv("PORT"))
+#
 if __name__ == "__main__":
-    #app.run(host='0.0.0.0', port=port)
-    app.run(host='0.0.0.0', port=7000, debug=True)
-
+    #cliApp = Api()
+    port = int(os.getenv("PORT"))
+    host = '0.0.0.0'
+    #port = 8000
+    httpd = simple_server.make_server(host, port, app)
+    #print("Serving on %s %d" % (host, port))
+    httpd.serve_forever()
 # The [0,5] is a standard annotation range for STS tasks with 0 representing
 # complete dissimilarity and 5 total similarity.
